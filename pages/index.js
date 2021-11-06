@@ -1,3 +1,5 @@
+import axios from "axios";
+import { MongoClient } from "mongodb";
 import React from "react";
 import MeetupList from "../components/meetups/MeetupList";
 
@@ -28,11 +30,23 @@ function HomePage(props) {
   );
 }
 
-export const getStaticProps = () => {
+export const getStaticProps = async () => {
+  const client = await MongoClient.connect(
+    "mongodb+srv://cliffaust:$Gingerpepper2018@cluster0.v3xzu.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupCollection = await db.collection("meetups");
+
+  const meetups = await meetupCollection.find().toArray();
+
+  client.close();
   return {
     props: {
       meetups: meetups,
     },
+
+    revalidate: 1,
   };
 };
 
