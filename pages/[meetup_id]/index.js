@@ -9,7 +9,7 @@ function MeetUpDetail() {
   );
 }
 
-export const getStaticProps = async () => {
+export const getStaticPaths = async () => {
   const client = await MongoClient.connect(
     "mongodb+srv://cliffaust:$Gingerpepper2018@cluster0.v3xzu.mongodb.net/meetups?retryWrites=true&w=majority"
   );
@@ -23,10 +23,9 @@ export const getStaticProps = async () => {
   client.close();
   return {
     fallback: false,
-    paths: meetup.map(() => ({ params: { meetupId: meetup._id.toString() } })),
-    props: {
-      meetup: meetup,
-    },
+    paths: meetup.map((meetup) => ({
+      params: { meetup_id: meetup._id.toString() },
+    })),
   };
 };
 
