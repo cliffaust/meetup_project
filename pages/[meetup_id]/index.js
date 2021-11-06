@@ -4,7 +4,7 @@ import Meetup from "../../components/meetups/MeetupDetail";
 function MeetUpDetail(props) {
   return (
     <div>
-      <Meetup meetup={props.meetup}></Meetup>
+      <h3>{props.meetup.title}</h3>
     </div>
   );
 }
@@ -39,15 +39,15 @@ export const getStaticProps = async (context) => {
 
   const meetupCollection = db.collection("meetups");
 
-  const meetup = await meetupCollection.findOne({ _id: meetupId });
+  const selectedMeetup = await meetupCollection.findById(meetupId);
 
-  console.log(meetup);
+  console.log("This is the meetup ", selectedMeetup);
 
   client.close();
 
   return {
     props: {
-      meetup: meetup,
+      meetup: selectedMeetup,
     },
   };
 };
