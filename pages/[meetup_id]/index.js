@@ -1,13 +1,5 @@
+import { MongoClient } from "mongodb";
 import Meetup from "../../components/meetups/MeetupDetail";
-
-const meetup = {
-  id: 1,
-  title: "Programming is the future",
-  image:
-    "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=772&q=80",
-  address: "343 Danlogo, Italy",
-  description: "This is the first meetup",
-};
 
 function MeetUpDetail() {
   return (
@@ -16,5 +8,26 @@ function MeetUpDetail() {
     </div>
   );
 }
+
+export const getStaticProps = async () => {
+  const client = await MongoClient.connect(
+    "mongodb+srv://cliffaust:$Gingerpepper2018@cluster0.v3xzu.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+
+  const db = client.db();
+
+  const meetupCollection = db.collection("meetups");
+
+  const meetup = await meetupCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+  return {
+    fallback: false,
+    paths: meetup.map(() => ({ params: { meetupId: meetup._id.toString() } })),
+    props: {
+      meetup: meetup,
+    },
+  };
+};
 
 export default MeetUpDetail;
