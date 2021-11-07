@@ -4,7 +4,7 @@ import Meetup from "../../components/meetups/MeetupDetail";
 function MeetUpDetail(props) {
   return (
     <div>
-      <h3>{props.meetup.title}</h3>
+      <Meetup meetup={props.meetup}></Meetup>
     </div>
   );
 }
