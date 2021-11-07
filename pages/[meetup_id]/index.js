@@ -30,7 +30,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context) => {
-  const meetupId = context.params.meetupId;
+  const meetupId = context.params.meetup_id;
   const client = await MongoClient.connect(
     "mongodb+srv://cliffaust:$Gingerpepper2018@cluster0.v3xzu.mongodb.net/meetups?retryWrites=true&w=majority"
   );
@@ -47,7 +47,13 @@ export const getStaticProps = async (context) => {
 
   return {
     props: {
-      meetup: selectedMeetup,
+      meetup: {
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        image: selectedMeetup.image,
+        description: selectedMeetup.description,
+      },
     },
   };
 };
