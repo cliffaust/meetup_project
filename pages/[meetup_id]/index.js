@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import Meetup from "../../components/meetups/MeetupDetail";
 
 function MeetUpDetail(props) {
@@ -40,10 +40,8 @@ export const getStaticProps = async (context) => {
   const meetupCollection = db.collection("meetups");
 
   const selectedMeetup = await meetupCollection.findOne({
-    _id: meetupId,
+    _id: ObjectId(meetupId),
   });
-
-  console.log("This is the meetup ", selectedMeetup);
 
   client.close();
 
